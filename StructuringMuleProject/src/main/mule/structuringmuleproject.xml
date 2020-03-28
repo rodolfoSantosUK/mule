@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6df28a4f-267c-45d2-a8d2-fa666b76b06e" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="GettFlow" doc:id="c161c7b0-b423-44b1-a9eb-5175d551d551" >
+		<http:listener doc:name="/GET hello" doc:id="916447f6-a3b6-43b7-b590-fee07c3d1c0d" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="723ddd48-28fd-4987-937c-d0c9a72529b1" />
+		<set-payload value='{"message":"Método get foi invocado"}' doc:name="Set Payload" doc:id="ffa9b960-14e8-4e8c-9da3-9f42199b5b6d" />
+	</flow>
+	<flow name="PostFlow" doc:id="7ed4454e-35d3-4ef0-9c2d-7fbabe715e9f" >
+		<http:listener doc:name="/POST hello" doc:id="d4d27ec3-9d82-4046-ad29-a00d3098023f" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="POST" />
+		<logger level="INFO" doc:name="Logger" doc:id="405523e5-35c4-4dda-b585-1841791a0fe3" />
+	</flow>
+</mule>
