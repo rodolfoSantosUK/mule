@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0f3c2bd4-354e-4852-9b62-cf136e424f25" >
+		<http:listener-connection host="0.0.0.0" port="8083" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="f4cda9a8-c9bc-4c1e-a8f5-541da4a8372e" >
+		<http:request-connection host="dummy.restapiexample.com" />
+	</http:request-config>
+	<flow name="invokerestwsFlow" doc:id="b39ba589-5a99-43ab-aeda-1acbad4df5a7" >
+		<http:listener doc:name="/GET hello1" doc:id="fd8f82c2-6234-427f-9676-0695d764e2f0" config-ref="HTTP_Listener_config" path="/api" allowedMethods="GET"/>
+		<http:request method="GET" doc:name="call Rest webservice " doc:id="1ca13c89-b81f-40de-8817-cfa303c5386c" config-ref="HTTP_Request_configuration" path="/api/v1/employees"/>
+	</flow>
+</mule>
