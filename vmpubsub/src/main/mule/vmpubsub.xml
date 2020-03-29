@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets" xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2271b095-d0c6-4ae5-8717-2cefeeedf61b" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+	<vm:config name="VM_Config" doc:name="VM Config" doc:id="0dbb3a66-bc56-4f66-9cf0-6017e839f879" >
+		<vm:connection />
+		<vm:queues >
+			<vm:queue queueName="CustomerQueue" />
+		</vm:queues>
+	</vm:config>
+	<sockets:listener-config name="Sockets_Listener_config" doc:name="Sockets Listener config" doc:id="f3917be6-a534-4745-9757-a868d8642372" >
+		<sockets:tcp-listener-connection host="0.0.0.0" port="8585" />
+	</sockets:listener-config>
+	<flow name="publicFlow" doc:id="e1d808f3-d4b1-4264-aa6e-b000c8c3f216" >
+		<http:listener doc:name="Listener" doc:id="91cca370-87b6-4498-bba3-0e49d2fd16a1" allowedMethods="POST" path="/customer" config-ref="HTTP_Listener_config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b6669d8d-79fe-44eb-8d75-9892d624fec2" message="** Before Publish **"/>
+		<vm:publish doc:name="Publish" doc:id="c67321db-537e-4589-8c32-738a741b253d" config-ref="VM_Config" queueName="CustomerQueue"/>
+		<logger level="INFO" doc:name="Logger" doc:id="16e3ffda-ea3c-40a9-8b55-c365f69e7430" message="** After Publish **"/>
+	</flow>
+	<flow name="SubscriberFlow" doc:id="d700ab9c-a0a6-4fe3-a664-0ddd7bc52b8b" >
+		<vm:listener queueName="CustomerQueue" doc:name="Listener" doc:id="b1ff9941-c140-46d4-9b34-77715941fd0b" config-ref="VM_Config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="495a5792-f59d-4ed5-9774-9f4768501829" message="** After Consumer **"/>
+	</flow>
+</mule>
